@@ -1,0 +1,6 @@
+matplotlib==3.10.3
+mlb_statsapi==1.9.0
+numpy==2.3.1
+pandas==2.3.1
+pybaseball==2.2.7
+python_mlb_statsapi==0.5.26
