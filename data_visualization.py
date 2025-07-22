@@ -15,6 +15,7 @@ import data_processing
 
 def generate_grouped_plot(df,date_col,value_col,player):
     def grab_plot_elements(metric):
+        # Function for generating plot title, axis titles, etc.
         input_metrics = {'Bat Speed':['bat_speed',f"{player}'s Bat Speed By Date",'Bat Speed (mph)'],
                          'Swing Length':['swing_length',f"{player}'s Swing Length By Date", 'Swing Length (ft)'],
                          'Attack Angle':['attack_angle', f"{player}'s Attack Angle By Date", 'Attack Angle (deg)'],
@@ -23,6 +24,7 @@ def generate_grouped_plot(df,date_col,value_col,player):
         return input_metrics[metric][0],input_metrics[metric][1], input_metrics[metric][2]
     value, plot_title, yax_label = grab_plot_elements(value_col)
     def group_data(df,group,value):
+        # Grouping function to turn pitch-level data into outing-level data
         return (df.groupby(group).agg(daily_avg = (value,'mean'),
                                       daily_min = (value,'min'),
                                       daily_max = (value,'max'),
@@ -65,7 +67,7 @@ def generate_grouped_plot(df,date_col,value_col,player):
             ax.xaxis.set_minor_locator(mdates.MonthLocator())
             plt.xticks(rotation=90, fontsize=14)
 
-        # Set x-axis limits to match your data exactly
+        # Set x-axis limits to match data exactly
         ax.set_xlim(_group_df.index.min(), _group_df.index.max())
         ax.legend(fontsize=16)
         ax.set_title(plot_title, fontsize=24)

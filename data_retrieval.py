@@ -11,11 +11,13 @@ import statsapi
 import pandas as pd
 
 def get_roster(team):
+    # Function for using MLB Stats API to pull a team's active roster and return as a string
     mlb = mlbstatsapi.Mlb()
     team_id = mlb.get_team_id(team)[0]
     return statsapi.roster(team_id)
 
 def create_roster_df(roster):
+    # Function for taking roster string and parsing into a pandas dataframe
     lines = roster.strip().split('\n')
     rows = []
     for line in lines:

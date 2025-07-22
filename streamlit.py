@@ -7,6 +7,7 @@ Created on Tue Jun 24 08:07:07 2025
 
 import streamlit as st
 
+# Main app navigation page
 pg = st.navigation([
     st.Page("team_selection.py",title='Team Selection'),
     st.Page("player_report.py",title='Player Report')])

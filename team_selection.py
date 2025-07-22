@@ -12,6 +12,7 @@ import pandas as pd
 
 import data_retrieval
 
+# Dict of all active MLB teams and team abbreviations
 teams = {'AZ':'Arizona Diamondbacks','OAK':'Athletics',
          'ATL':'Atlanta Braves','BAL':'Baltimore Orioles',
          'BOS':'Boston Red Sox','CHC':'Chicago Cubs',
@@ -33,8 +34,8 @@ with st.form("Team Selection"):
     submitted = st.form_submit_button(label='Submit')
     
 if submitted:
-    team_roster = data_retrieval.create_roster_df(data_retrieval.get_roster(teams[team])) #Modify to eliminate pitchers
-    team_roster = team_roster.loc[team_roster['Position'] != 'P']
+    team_roster = data_retrieval.create_roster_df(data_retrieval.get_roster(teams[team])) 
+    team_roster = team_roster.loc[team_roster['Position'] != 'P'] # Removes pitchers from roster
     st.dataframe(team_roster)
-    st.session_state['team_roster'] = team_roster
+    st.session_state['team_roster'] = team_roster # Persist team roster by storing in session state
     st.switch_page("player_report.py")
