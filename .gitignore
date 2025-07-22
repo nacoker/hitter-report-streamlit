@@ -1,0 +1,8 @@
+# Ignore Spyder project settings
+.spyproject/
+
+# Ignore Python bytecode
+__pycache__/
+
+# Ignore a specific file
+date_comparison.py
