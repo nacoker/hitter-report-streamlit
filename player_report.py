@@ -9,6 +9,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import data_retrieval 
 import data_visualization
+import data_processing
 
 if 'team_roster' not in st.session_state:
     st.stop()
@@ -38,7 +39,18 @@ with st.form("Batter Inputs Form"):
         start_dt = str(start_dt)
         end_dt = str(end_dt)
         player_id = data_retrieval.grab_player_id(last_name = last_name,first_name = first_name)
-        df = data_retrieval.grab_batter_data(player_id = player_id, start_dt = start_dt, end_dt = end_dt)            
+        df = data_retrieval.grab_batter_data(player_id = player_id, start_dt = start_dt, end_dt = end_dt)
+        player_metrics = data_processing.calculate_batter_metrics(df)
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric(label = 'Batting Average', value = player_metrics.loc[0,'Batting Average'].round(3))
+            st.metric(label = 'OPS', value = player_metrics.loc[0,'OPS'].round(3))
+        with col2:
+            st.metric(label = 'On-Base Percentage', value = player_metrics.loc[0,'On-Base Percentage'].round(3))
+            st.metric(label = 'Chase Rate', value = player_metrics.loc[0,'Chase Rate'].round(3))   
+        with col3:
+            st.metric(label = 'Slugging Percentage', value = player_metrics.loc[0,'Slugging Percentage'].round(3))
+            st.metric(label = 'Whiff Rate', value = player_metrics.loc[0,'Whiff Rate'].round(3))                     
         for metric in metrics: # Iterate through list of selected metrics, generating plot for each one
             fig,ax = data_visualization.generate_grouped_plot(df, date_col = 'game_date', value_col = metric, player = player)
             st.pyplot(fig)
