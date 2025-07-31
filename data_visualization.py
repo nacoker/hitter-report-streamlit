@@ -28,14 +28,16 @@ def generate_grouped_plot(df,date_col,value_col,player):
         return (df.groupby(group).agg(daily_avg = (value,'mean'),
                                       daily_min = (value,'min'),
                                       daily_max = (value,'max'),
-                                      percentile_25 = (value, lambda x: np.percentile(x, 0.25)),
-                                      percentile_75 = (value, lambda x: np.percentile(x, 0.75))))
+                                      percentile_25 = (value, lambda x: x.quantile(0.25)),
+                                      percentile_75 = (value, lambda x: x.quantile(0.75))))
     df[date_col] = pd.to_datetime(df[date_col])
     _group_df = group_data(df,group = date_col, value = value)
     _group_df.index = pd.to_datetime(_group_df.index)
     fig,ax = plt.subplots(figsize = (16,10))
     ax.fill_between(_group_df.index,_group_df['daily_min'],_group_df['daily_max'],
-                    color='#f5e6d3',alpha=0.7,label='Daily Range') # Calculate daily max/min for each metric
+                    color='#f5e6d3',alpha=0.6,label='Daily Range') # Calculate daily max/min for each metric
+    ax.fill_between(_group_df.index,_group_df['percentile_25'],_group_df['percentile_75'],
+                    color='#f7b245',alpha=0.3,label='IQR') # Calculate daily max/min for each metric
     ax.plot(_group_df.index,_group_df['daily_avg'],color='black',linewidth=1.5,label = f"Daily Average {value_col}") # metric should be replaced with checkbox value
     def clean_plot(_group_df, ax, plot_title, yax_title):
         # Format x-axis dynamically based on data range
